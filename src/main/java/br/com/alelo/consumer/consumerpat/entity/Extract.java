@@ -8,55 +8,29 @@ import java.util.Date;
 
 @Data
 @Entity
+@Table(name = "tb_extracts")
 @NoArgsConstructor
 public class Extract {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column
-    int establishmentNameId;
+    @Column(name = "product_description")
+    private String productDescription;
 
-    @Column
-    String establishmentName;
+    @Column(name = "date_buy")
+    private Date dateBuy;
 
-    @Column
-    String productDescription;
+    @Column(name = "amount")
+    private double amount;
 
-    @Column
-    Date dateBuy;
+    @ManyToOne
+    @JoinColumn(name = "fk_card")
+    private Card card;
 
-    @Column
-    int cardNumber;
-
-    @Column
-    double amount;
-
-    public Extract(int id, int establishmentNameId, String establishmentName, String productDescription, Date dateBuy, int cardNumber, double amount) {
-        this.id = id;
-        this.establishmentNameId = establishmentNameId;
-        this.establishmentName = establishmentName;
-        this.productDescription = productDescription;
-        this.dateBuy = dateBuy;
-        this.cardNumber = cardNumber;
-        this.amount = amount;
-    }
-
-    public Extract( String productDescription, Date dateBuy, int cardNumber, double amount) {
-        this.productDescription = productDescription;
-        this.dateBuy = dateBuy;
-        this.cardNumber = cardNumber;
-        this.amount = amount;
-    }
-
-    public Extract(String establishmentName, String productDescription, Date dateBuy, int cardNumber, double amount) {
-        this.establishmentNameId = establishmentNameId;
-        this.establishmentName = establishmentName;
-        this.productDescription = productDescription;
-        this.dateBuy = dateBuy;
-        this.cardNumber = cardNumber;
-        this.amount = amount;
-    }
+    @ManyToOne
+    @JoinColumn(name = "fk_establishment")
+    private Establishment establishment;
 
 }
