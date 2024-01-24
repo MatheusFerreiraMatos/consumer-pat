@@ -1,12 +1,17 @@
 package br.com.alelo.consumer.consumerpat.controller;
 
+import br.com.alelo.consumer.consumerpat.controller.dto.response.ConsumerResponse;
 import br.com.alelo.consumer.consumerpat.entity.Consumer;
 import br.com.alelo.consumer.consumerpat.entity.Extract;
 import br.com.alelo.consumer.consumerpat.respository.ConsumerRepository;
 import br.com.alelo.consumer.consumerpat.respository.ExtractRepository;
+import br.com.alelo.consumer.consumerpat.service.ConsumerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 @Log4j2
-@Controller
-@RequestMapping("/consumer")
+@RestController
+@RequestMapping("/consumers")
 public class ConsumerController {
 
     @Autowired
@@ -24,16 +29,16 @@ public class ConsumerController {
     @Autowired
     ExtractRepository extractRepository;
 
+    @Autowired
+    private ConsumerService service;
+
 
     /* Listar todos os clientes (obs.: tabela possui cerca de 50.000 registros) */
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/consumerList", method = RequestMethod.GET)
-    public List<Consumer> listAllConsumers() {
+    @GetMapping
+    public ResponseEntity listAllConsumers(Pageable pageable) {
         log.info("obtendo todos clientes");
-        var consumers = repository.getAllConsumersList();
-
-        return consumers;
+        Page<ConsumerResponse> consumers = service.getConsumers(pageable);
+        return consumers.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(consumers);
     }
 
     /* Cadastrar novos clientes */
