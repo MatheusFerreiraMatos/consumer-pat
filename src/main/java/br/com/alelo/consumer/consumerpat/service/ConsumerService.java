@@ -4,6 +4,7 @@ import br.com.alelo.consumer.consumerpat.controller.dto.request.ConsumerRequest;
 import br.com.alelo.consumer.consumerpat.controller.dto.response.ConsumerResponse;
 import br.com.alelo.consumer.consumerpat.entity.Consumer;
 import br.com.alelo.consumer.consumerpat.respository.ConsumerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,8 @@ import java.util.Optional;
 @Service
 public class ConsumerService {
 
+    @Autowired
     private ConsumerRepository repository;
-
-    public ConsumerService(ConsumerRepository repository) {
-        this.repository = repository;
-    }
 
     public Page getConsumers(Pageable pageable) {
         return repository.findAll(pageable).map(ConsumerResponse::new);

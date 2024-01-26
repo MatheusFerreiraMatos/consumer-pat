@@ -22,14 +22,14 @@ public class ConsumerResponse {
     private Contact contact;
     private List<Card> cards;
 
-    public ConsumerResponse(Consumer consumerResponse) {
-        this.id = consumerResponse.getId();
-        this.name = consumerResponse.getName();
-        this.documentNumber = consumerResponse.getDocumentNumber();
-        this.birthDate = consumerResponse.getBirthDate();
-        this.address = consumerResponse.getAddress();
-        this.contact = consumerResponse.getContact();
-        this.cards = consumerResponse.getCards();
+    public ConsumerResponse(Consumer consumer) {
+        this.id = consumer.getId();
+        this.name = consumer.getName();
+        this.documentNumber = consumer.getDocumentNumber();
+        this.birthDate = consumer.getBirthDate();
+        this.address = consumer.getAddress();
+        this.contact = consumer.getContact();
+        this.cards = consumer.getCards();
     }
 
 }
