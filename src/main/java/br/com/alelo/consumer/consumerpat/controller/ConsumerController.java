@@ -1,5 +1,6 @@
 package br.com.alelo.consumer.consumerpat.controller;
 
+import br.com.alelo.consumer.consumerpat.controller.dto.request.ConsumerRequest;
 import br.com.alelo.consumer.consumerpat.controller.dto.response.ConsumerResponse;
 import br.com.alelo.consumer.consumerpat.entity.Consumer;
 import br.com.alelo.consumer.consumerpat.entity.Extract;
@@ -14,7 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -42,9 +46,13 @@ public class ConsumerController {
     }
 
     /* Cadastrar novos clientes */
-    @RequestMapping(value = "/createConsumer", method = RequestMethod.POST)
-    public void createConsumer(@RequestBody Consumer consumer) {
-        repository.save(consumer);
+    @PostMapping
+    public ResponseEntity createConsumer(@RequestBody @Valid ConsumerRequest consumerRequest,
+                                         UriComponentsBuilder uriBuilder) {
+        ConsumerResponse response = service.createConsumer(consumerRequest);
+
+        URI uri = uriBuilder.path("/consumers/{id}").buildAndExpand(response.getId()).toUri();
+        return ResponseEntity.created(uri).body(response);
     }
 
     // Atualizar cliente, lembrando que não deve ser possível alterar o saldo do cartão

@@ -1,6 +1,8 @@
 package br.com.alelo.consumer.consumerpat.service;
 
+import br.com.alelo.consumer.consumerpat.controller.dto.request.ConsumerRequest;
 import br.com.alelo.consumer.consumerpat.controller.dto.response.ConsumerResponse;
+import br.com.alelo.consumer.consumerpat.entity.Consumer;
 import br.com.alelo.consumer.consumerpat.respository.ConsumerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +21,8 @@ public class ConsumerService {
         return repository.findAll(pageable).map(ConsumerResponse::new);
     }
 
+    public ConsumerResponse createConsumer(ConsumerRequest consumerRequest) {
+        Consumer createConsumer = repository.save(new Consumer(consumerRequest));
+        return new ConsumerResponse(createConsumer);
+    }
 }
