@@ -47,18 +47,19 @@ public class ConsumerController {
 
     /* Cadastrar novos clientes */
     @PostMapping
-    public ResponseEntity createConsumer(@RequestBody @Valid ConsumerRequest consumerRequest,
+    public ResponseEntity createConsumer(@RequestBody @Valid ConsumerRequest request,
                                          UriComponentsBuilder uriBuilder) {
-        ConsumerResponse response = service.createConsumer(consumerRequest);
+        ConsumerResponse response = service.createConsumer(request);
 
         URI uri = uriBuilder.path("/consumers/{id}").buildAndExpand(response.getId()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
 
     // Atualizar cliente, lembrando que não deve ser possível alterar o saldo do cartão
-    @RequestMapping(value = "/updateConsumer", method = RequestMethod.POST)
-    public void updateConsumer(@RequestBody Consumer consumer) {
-        repository.save(consumer);
+    @PutMapping("/{id}")
+    public ResponseEntity updateConsumer(@PathVariable Long id, @RequestBody ConsumerRequest request) {
+        ConsumerResponse response = service.updateConsumer(id, request);
+        return ResponseEntity.ok(response);
     }
 
     /*
